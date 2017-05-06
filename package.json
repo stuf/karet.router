@@ -10,10 +10,10 @@
     "test": "env-cmd test nyc mocha",
     "lint": "eslint src/",
     "build": "npm run build:cjs && npm run build:umd && npm run build:umd:min",
-    "build:cjs": "                       rollup -c -n karet.router -f cjs -i src/index.js -o dist/karet.router.cjs.js",
-    "build:es": "                        rollup -c -n karet.router -f es -o dist/karet.router.es.js",
-    "build:umd": "                       rollup -c -n karet.router -f umd -o dist/karet.router.js",
-    "build:umd:min": "env-cmd production rollup -c -n karet.router -f umd -o dist/karet.router.min.js",
+    "build:cjs": "rollup -c -n karet.router -f cjs -i src/index.js -o dist/karet.router.cjs.js",
+    "build:es": "rollup  -c -n karet.router -f es  -i src/index.js -o dist/karet.router.es.js",
+    "build:umd": "rollup -c -n karet.router -f umd -i src/index.js -o dist/karet.router.js",
+    "build:umd:min": "env-cmd production rollup -c -n karet.router -f umd -i src/index.js -o dist/karet.router.min.js",
     "report-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov"
   },
   "repository": {
@@ -32,11 +32,9 @@
   "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",
-    "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.4.0",
-    "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.24.1",
     "chai": "^3.5.0",
