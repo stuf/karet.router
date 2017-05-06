@@ -1,6 +1,6 @@
 --retries 2
 --compilers js:babel-register
 --recursive
---require jsdom-global/register
 --require babel-polyfill
+--require jsdom-global/register
 --require ./test/setup.js
