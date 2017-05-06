@@ -6,7 +6,8 @@
         "browsers": ["last 2 versions"],
         "node": true,
         "debug": true
-      }
+      },
+      "modules": false
     }]
   ],
   "plugins": [
