@@ -4,18 +4,12 @@ node_js:
   - "6"
   - "7"
 
-cache:
-  directories:
-    - node_modules
-
-install:
-  - npm install -g npm@latest
-  - npm install
+cache: yarn
 
 script:
-  - npm run lint
-  - npm run test
-  - npm run build
+  - yarn run lint
+  - yarn run test
+  - yarn run build
 
 after_success:
-  - npm run report-coverage
+  - yarn run report-coverage
