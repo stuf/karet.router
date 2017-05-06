@@ -43,7 +43,7 @@ const Router = ({ routes }) => {
       <RouteRoot routes={routes} />
     </U.Context>
   );
-}
+};
 
 Router.propTypes = {
   routes: P.object.isRequired

@@ -1,4 +1,4 @@
-import React from 'karet';
+import React from 'karet'; // eslint-disable-line
 import * as U from 'karet.util';
 import * as P from 'prop-types';
 import * as R from 'ramda';

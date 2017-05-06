@@ -27,7 +27,6 @@ location$.observe(({ next, action }) => action === 'POP' && location.set(next));
 
 location.observe(next => {
   if (!R.equals(next, getLocation())) {
-    console.info('Navigating to ', next);
     history.push(createPathString(next));
   }
 });
