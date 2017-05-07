@@ -9,9 +9,10 @@ var U = require('karet.util');
 var U__default = U['default'];
 var P = require('prop-types');
 var R = require('ramda');
-var L = require('partial.lenses');
+var toRegex = _interopDefault(require('path-to-regexp'));
 var Kefir = require('kefir');
 var H = require('history');
+var L = require('partial.lenses');
 
 var preventDefault = function preventDefault(e) {
   e.preventDefault();
@@ -23,35 +24,21 @@ var isExternal = U.lift1Shallow(function (href) {
   );
 });
 
-var invariant = function invariant(cond, format) {
-  for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-    args[_key - 2] = arguments[_key];
-  }
+var expandRoutes = R.compose(R.map(R.zipObj(['route', 'Component'])), R.toPairs);
 
-  var NODE_ENV = process.env.NODE_ENV;
+var addRegexes = R.map(function (entry) {
+  var regex = toRegex(entry.route);
+  regex.keys = regex.keys.map(R.prop('name'));
 
-  if (NODE_ENV !== 'production') {
-    if (!format) {
-      throw new Error('message argument required');
-    }
-  }
+  return R.assoc('regex', regex, entry);
+});
 
-  if (!cond) {
-    var error = void 0;
-    if (!format) {
-      error = new Error('Minified exception');
-    } else {
-      var argIndex = 0;
-      error = new Error(format.replace(/%s/g, function () {
-        return args[argIndex++];
-      }));
-      error.name = 'Invariant Violation';
-    }
+var sortStaticFirst = R.sortBy(function (_ref) {
+  var regex = _ref.regex;
+  return regex.keys.length === 0 ? 0 : 1;
+});
 
-    error.framesToPop = 1;
-    throw error;
-  }
-};
+var prepareRoutes = R.compose(sortStaticFirst, addRegexes, expandRoutes);
 
 var CONTEXT_PROP_NAME = 'karet.router';
 
@@ -151,30 +138,28 @@ var context = _defineProperty({}, CONTEXT_PROP_NAME, {
 
 //
 
-var NotFound = function NotFound() {
-  return React.createElement(
-    'div',
-    null,
-    'Not Found'
-  );
-};
+var findMatchingRoute = R.curry(function (routes, pathname) {
+  for (var i = 0, rs = routes.length; i < rs; i++) {
+    var _routes$i = routes[i],
+        Component = _routes$i.Component,
+        regex = _routes$i.regex;
 
-//
+    var match = regex.exec(pathname);
 
-var routeOrNotFound = function routeOrNotFound(routes, path) {
-  return L.get([path, L.define(NotFound)], routes);
-};
+    if (match) {
+      return React.createElement(Component, { params: R.zipObj(regex.keys, R.tail(match)) });
+    }
+  }
+});
 
 var RouteRoot = U.withContext(function (_ref, _ref2) {
   var routes = _ref.routes;
   var pathname = _ref2[CONTEXT_PROP_NAME].pathname;
-  return U.fromKefir(U__default(pathname, function (path) {
-    return React.createElement(routeOrNotFound(routes, path));
-  }));
+  return U.fromKefir(U__default(pathname, findMatchingRoute(routes)));
 });
 
 RouteRoot.propTypes = {
-  routes: P.object.isRequired
+  routes: P.arrayOf(P.object)
 };
 
 //
@@ -182,17 +167,16 @@ RouteRoot.propTypes = {
 var Router = function Router(_ref3) {
   var routes = _ref3.routes;
 
-  invariant(routes, '<Router> requires a route configuration');
-
+  var rs = prepareRoutes(routes);
   return React.createElement(
     U.Context,
     { context: context },
-    React.createElement(RouteRoot, { routes: routes })
+    React.createElement(RouteRoot, { routes: rs })
   );
 };
 
 Router.propTypes = {
-  routes: P.object.isRequired
+  routes: P.object
 };
 
 exports.Link = Link;

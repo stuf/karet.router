@@ -42,6 +42,8 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
+//
+
 var isModifiedEvent = function isModifiedEvent(e) {
   return !!(e.altKey || e.ctrlKey || e.metaKey || e.shiftKey);
 };
@@ -85,6 +87,8 @@ Link.propTypes = {
   onClick: P.func
 };
 
+//
+
 var createPathString = R.pipe(L.collect([L.props('pathname', 'search', 'hash'), L.values]), R.join(''));
 
 //
@@ -118,6 +122,8 @@ location.observe(function (next) {
 });
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
 
 var context = _defineProperty({}, CONTEXT_PROP_NAME, {
   location: location,
