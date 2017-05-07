@@ -16,7 +16,7 @@
     "build:umd": "env-cmd development rollup -c -n karet.router -f umd -i src/index.js -o dist/karet.router.js",
     "build:umd:min": "env-cmd production rollup -c -n karet.router -f umd -i src/index.js -o dist/karet.router.min.js",
     "report-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov",
-    "prepublish": "npm run lint && npm run test && npm run build"
+    "prepare": "npm run lint && npm run test && npm run build"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,15 @@
   "bugs": {
     "url": "https://github.com/stuf/karet.router/issues"
   },
+  "keywords": [
+    "react",
+    "karet",
+    "jsx",
+    "route",
+    "router",
+    "routing",
+    "history"
+  ],
   "dependencies": {
     "history": "^4.6.1",
     "karet": "^1.2.1",

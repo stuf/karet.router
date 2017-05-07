@@ -23,9 +23,8 @@ const findMatchingRoute = R.curry((routes, pathname) => {
     const match = regex.exec(pathname);
 
     if (match) {
-      return React.createElement(
-        Component,
-        { params: R.zipObj(regex.keys, R.tail(match)) });
+      return React.createElement(Component,
+                                 { params: R.zipObj(regex.keys, R.tail(match)) });
     }
   }
 });

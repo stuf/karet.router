@@ -65,7 +65,9 @@ var handleClickWith = R.curry(function (location, href, e) {
       _internal$3 = _internal[4],
       hash = _internal$3 === undefined ? '' : _internal$3;
 
-  location.set({ pathname: pathname, search: search, hash: hash });
+  if (!isExternal(href)) {
+    location.set({ pathname: pathname, search: search, hash: hash });
+  }
 });
 
 var Link = U.withContext(function (_ref, _ref2) {

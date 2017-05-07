@@ -3,7 +3,7 @@ import * as U from 'karet.util';
 import * as P from 'prop-types';
 import * as R from 'ramda';
 
-import { preventDefault } from './util';
+import { preventDefault, isExternal } from './util';
 import { CONTEXT_PROP_NAME } from './constants';
 
 //
@@ -20,7 +20,9 @@ const handleClickWith = R.curry((location, href, e) => {
   const internal = /^((\/[^?#]*)([?][^#]*)?)?([#].*)?$/.exec(href);
   const [,, pathname = '', search = '', hash = ''] = internal;
 
-  location.set({ pathname, search, hash });
+  if (!isExternal(href)) {
+    location.set({ pathname, search, hash });
+  }
 });
 
 const Link = U.withContext(({ href, onClick, ...props }, { [CONTEXT_PROP_NAME]: { location } }) =>

@@ -1,6 +1,6 @@
 # Karet Router
 
-A router component for use with [Karet][karet].
+Routing component for use with [Karet][karet].
 
 [karet]: https://github.com/calmm-js/karet
 
@@ -13,7 +13,10 @@ A router component for use with [Karet][karet].
 ## Usage
 
 ```jsx
+// app.js
+import React from 'karet';
 import { Router } from 'karet.router';
+import { render } from 'react-dom';
 
 const routes = {
   '/': () =>
@@ -25,4 +28,10 @@ const routes = {
   '/with-params/:id': ({ params }) =>
     <div>Route with ID {params.id}</div>
 };
+
+const App = () => <Router routes={routes} />
+
+render(
+  <App />,
+  document.getElementById('root'));
 ```
