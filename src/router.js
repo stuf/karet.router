@@ -30,7 +30,7 @@ const findMatchingRoute = R.curry((routes, pathname) => {
   }
 });
 
-const RouteRoot = U.withContext(({ routes }, { [CONTEXT_PROP_NAME]: { pathname } }) =>
+export const RouteRoot = U.withContext(({ routes }, { [CONTEXT_PROP_NAME]: { pathname } }) =>
   U.fromKefir(K(pathname, findMatchingRoute(routes))));
 
 RouteRoot.propTypes = {
