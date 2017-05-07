@@ -10,7 +10,7 @@ export default {
   exports: 'named',
   external: [
     'karet', 'react', 'kefir', 'karet.util', 'history', 'partial.lenses', 'prop-types',
-    'ramda'
+    'ramda', 'path-to-regexp'
   ],
   globals: {
     ramda: 'R',
@@ -19,7 +19,8 @@ export default {
     'karet.util': 'U',
     'partial.lenses': 'L',
     history: 'H',
-    'prop-types': 'P'
+    'prop-types': 'P',
+    'path-to-regexp': 'toRegex'
   },
   plugins: [
     process.env.NODE_ENV &&
