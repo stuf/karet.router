@@ -1,10 +1,10 @@
 import React from 'karet';
 import K, * as U from 'karet.util';
-import * as L from 'partial.lenses';
 import * as P from 'prop-types';
+import * as R from 'ramda';
 import location from './location';
+import { prepareRoutes } from './util';
 import { CONTEXT_PROP_NAME } from './constants';
-import { invariant } from './util';
 
 //
 
@@ -17,36 +17,39 @@ const context = {
 
 //
 
-const NotFound = () =>
-  <div>
-    Not Found
-  </div>;
+const findMatchingRoute = R.curry((routes, pathname) => {
+  for (let i = 0, rs = routes.length; i < rs; i++) {
+    const { Component, regex } = routes[i];
+    const match = regex.exec(pathname);
 
-//
-
-const routeOrNotFound = (routes, path) => L.get([path, L.define(NotFound)], routes);
+    if (match) {
+      return React.createElement(
+        Component,
+        { params: R.zipObj(regex.keys, R.tail(match)) });
+    }
+  }
+});
 
 const RouteRoot = U.withContext(({ routes }, { [CONTEXT_PROP_NAME]: { pathname } }) =>
-  U.fromKefir(K(pathname, path => React.createElement(routeOrNotFound(routes, path)))));
+  U.fromKefir(K(pathname, findMatchingRoute(routes))));
 
 RouteRoot.propTypes = {
-  routes: P.object.isRequired
+  routes: P.arrayOf(P.object)
 };
 
 //
 
 const Router = ({ routes }) => {
-  invariant(routes, '<Router> requires a route configuration');
-
+  const rs = prepareRoutes(routes);
   return (
     <U.Context context={context}>
-      <RouteRoot routes={routes} />
+      <RouteRoot routes={rs} />
     </U.Context>
   );
 };
 
 Router.propTypes = {
-  routes: P.object.isRequired
+  routes: P.object
 };
 
 export default Router;
